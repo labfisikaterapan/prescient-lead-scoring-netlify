@@ -1,0 +1,13 @@
+# Prescient - Predictive Lead Scoring
+# Requirements untuk Vercel Serverless Deployment
+
+# Core Data Science Libraries
+pandas==2.1.4
+numpy==1.26.2
+scikit-learn==1.3.2
+
+# Machine Learning Models
+xgboost==2.0.3
+
+# Model Persistence
+joblib==1.3.2
