@@ -1,0 +1,126 @@
+╔════════════════════════════════════════════════════════════════╗
+║                                                                ║
+║       🎯 PRESCIENT - PREDICTIVE LEAD SCORING SYSTEM 🎯         ║
+║                                                                ║
+║              ✅ SETUP COMPLETED SUCCESSFULLY! ✅                ║
+║                                                                ║
+╚════════════════════════════════════════════════════════════════╝
+
+📁 STRUKTUR FOLDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+prescient-app/
+├── 🐍 main.py                  (FastAPI Server - 7.8 KB)
+├── 🤖 train_model.py           (ML Training Script - 7.1 KB)
+├── 📊 bank-full.csv            (Dataset - 4.6 MB)
+├── 🎲 prescient_model.pkl      (Trained Model - 2.7 MB)
+├── 📦 requirements.txt         (Dependencies - 479 B)
+├── 📖 README.md                (Full Documentation - 7.0 KB)
+├── ⚡ QUICKSTART.md            (Quick Start Guide)
+├── 🚫 .gitignore               (Git ignore rules)
+│
+└── 📁 static/
+    └── 🌐 index.html           (Frontend Dashboard)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 CARA MENJALANKAN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣ Masuk ke folder prescient-app:
+   cd prescient-app
+
+2️⃣ Install dependencies (jika belum):
+   pip install -r requirements.txt
+
+3️⃣ Jalankan API Server:
+   python main.py
+   
+   ✅ Server akan berjalan di: http://localhost:8000
+   ✅ API Docs: http://localhost:8000/docs
+
+4️⃣ Buka Frontend Dashboard:
+   - Buka file static/index.html di browser
+   - Atau gunakan Live Server extension
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 MODEL PERFORMANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Algorithm:    XGBoost Classifier
+✅ Accuracy:     89.87%
+✅ ROC-AUC:      92.62% ⭐
+✅ Dataset:      45,211 records
+✅ Status:       Production Ready
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 FITUR UTAMA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Machine Learning dengan XGBoost
+✅ RESTful API dengan FastAPI
+✅ Swagger UI Documentation
+✅ Dark Mode Dashboard dengan Glassmorphism
+✅ Animated Video Background
+✅ Real-time Lead Scoring
+✅ Lead Management System
+✅ Export to CSV
+✅ Responsive Design
+✅ CORS Enabled
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📡 API ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+POST   /predict     → Prediksi Lead Score
+GET    /            → Root endpoint
+GET    /health      → Health check
+GET    /docs        → Swagger UI
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📚 DOKUMENTASI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📖 README.md        → Full documentation
+⚡ QUICKSTART.md    → Quick start guide
+🌐 /docs            → Interactive API docs
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔥 BUSINESS LOGIC
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔥 Hot Lead  (> 0.8)      → Prioritas Tinggi
+⚠️  Warm Lead (0.5-0.79)  → Perlu Follow-up  
+❄️  Cold Lead (< 0.5)     → Low Priority
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎨 TECH STACK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Backend:
+  • Python 3.11+
+  • FastAPI
+  • XGBoost / RandomForest
+  • Scikit-learn
+  • Pandas & NumPy
+
+Frontend:
+  • HTML5 / CSS3 / JavaScript
+  • Tailwind CSS
+  • Chart.js
+  • Font Awesome
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ SISTEM SIAP DIGUNAKAN!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Untuk memulai, jalankan:
+   cd prescient-app
+   python main.py
+
+Lalu buka: static/index.html
+
+Happy Coding! 🚀
+Made with ❤️ by Prescient Team
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

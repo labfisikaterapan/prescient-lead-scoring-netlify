@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/api/predict", "destination": "/api/predict.py" },
+    { "source": "/api/auth/(.*)", "destination": "/api/auth.py" },
+    { "source": "/auth/token", "destination": "/api/auth.py" },
+    { "source": "/predict", "destination": "/api/predict.py" },
+    { "source": "/(.*)", "destination": "/static/index.html" }
+  ]
+}

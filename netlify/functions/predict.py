@@ -2,9 +2,14 @@
 Netlify Function - ML Prediction API
 """
 import json
+import sys
+import os
+
+# Add parent directories to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+
 import pandas as pd
 import joblib
-import os
 
 # Load model
 MODEL_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'prescient_model.pkl')

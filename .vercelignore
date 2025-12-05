@@ -1,0 +1,65 @@
+# Vercel Ignore File
+# Files that should NOT be deployed to Vercel
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Development files
+*.md
+!README.md
+DEPLOY_QUICK.md
+DEPLOYMENT.md
+AUTH_*.md
+API_*.md
+INTEGRATION_*.md
+*.txt
+!requirements.txt
+!runtime.txt
+
+# Testing files
+test_*.py
+*_test.py
+
+# Database files (using JSON instead)
+*.db
+*.db-journal
+prescient.db
+
+# Training scripts (model already trained)
+train_*.py
+generate_*.py
+regenerate_*.py
+create_*.py
+
+# Git
+.git/
+.gitignore
+
+# Old FastAPI files
+main.py
+auth_routes.py
+auth.py
+database.py
+
+# Deployment configs for other platforms
+Procfile
+render.yaml
+start_server.bat
+install_auth.ps1
+
+# CSV data files (using JSON instead)
+*.csv
+!bank-full.csv
+
+# Batch files
+*.bat
+*.ps1

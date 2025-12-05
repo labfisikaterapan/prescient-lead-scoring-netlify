@@ -1,0 +1,19 @@
+# Prescient Authentication Requirements
+# Install with: pip install -r requirements_auth.txt
+
+# Core dependencies (already in main requirements)
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.4.0
+pydantic[email]>=2.4.0
+
+# Database
+sqlalchemy>=2.0.23
+
+# Authentication & Security
+python-jose[cryptography]>=3.3.0  # JWT tokens
+passlib[bcrypt]>=1.7.4            # Password hashing
+python-multipart>=0.0.6           # Form data parsing
+
+# Email
+fastapi-mail>=1.4.1               # Email sending (optional, can use smtplib)

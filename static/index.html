@@ -1268,7 +1268,7 @@
             btn.disabled = true;
             
             try {
-                const response = await fetch('http://localhost:8000/auth/forgot-password', {
+                const response = await fetch('/api/auth', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1311,7 +1311,7 @@
             btn.disabled = true;
             
             try {
-                const response = await fetch('http://localhost:8000/auth/register', {
+                const response = await fetch('/api/auth', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1366,7 +1366,7 @@
             // Real API authentication
             try {
                 console.log(`Attempting login for: ${username}`);
-                const response = await fetch('http://localhost:8000/auth/token', {
+                const response = await fetch('/api/auth', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1889,7 +1889,7 @@
             try {
                 console.log('Sending prediction request:', formData);
                 
-                const response = await fetch('http://localhost:8000/predict', {
+                const response = await fetch('/api/predict', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

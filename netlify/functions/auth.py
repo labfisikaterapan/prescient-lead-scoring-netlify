@@ -5,8 +5,11 @@ import json
 import hashlib
 import hmac
 import os
+import sys
 import time
-from urllib.parse import parse_qs
+
+# Add parent directories to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 # Simple user storage
 USERS_FILE = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'users.json')
