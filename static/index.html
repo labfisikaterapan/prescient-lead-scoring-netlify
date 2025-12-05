@@ -1532,11 +1532,19 @@
          * 4. Update dashboard statistics
          */
         function updateLeadStatus(id, newStatus) {
-            // Konversi ID ke number untuk matching yang tepat
-            const leadId = typeof id === 'string' ? parseInt(id, 10) : id;
+            console.log(`🔄 updateLeadStatus called: ID=${id}, newStatus=${newStatus}`);
+            
+            // Konversi ID - bisa string atau number
+            const leadId = typeof id === 'string' ? (id.startsWith('CUST-') ? id : parseInt(id, 10)) : id;
+            
+            console.log(`🔍 Looking for lead with ID:`, leadId, `Type: ${typeof leadId}`);
+            console.log(`📊 Total leads:`, mockLeads.length);
             
             // Cari lead yang akan diupdate
-            const lead = mockLeads.find(l => l.id === leadId);
+            const lead = mockLeads.find(l => {
+                // Support both string (CUST-xxx) and number IDs
+                return l.id === leadId || l.id.toString() === leadId.toString();
+            });
             
             if (lead) {
                 // Simpan status lama untuk tracking
@@ -1545,7 +1553,11 @@
                 // LANGSUNG ubah properti status di array mockLeads
                 lead.status = newStatus;
                 
-                console.log(`Status updated: Lead #${id} from '${oldStatus}' to '${newStatus}'`);
+                console.log(`✅ Status updated: Lead ${lead.name} (#${lead.id}) from '${oldStatus}' to '${newStatus}'`);
+                
+                // Show toast notification
+                const statusText = newStatus === 'done' ? '✅ Selesai' : '📝 Pending';
+                showToast(`${statusText}: ${lead.name}`, 'success');
                 
                 // PENTING: Panggil applyFilters(false) untuk re-render tabel
                 // Parameter false = jangan reset ke halaman 1
@@ -1554,13 +1566,10 @@
                 // Update statistik dashboard
                 updateDashboardStats();
                 
-                // Optional: Visual feedback jika berubah ke 'done'
-                if (oldStatus === 'pending' && newStatus === 'done') {
-                    console.log(`✓ Lead #${leadId} dipindahkan ke bagian 'Selesai'`);
-                }
             } else {
                 console.error(`❌ Lead dengan ID ${id} tidak ditemukan!`);
-                console.log('Available IDs:', mockLeads.map(l => l.id).slice(0, 10));
+                console.log('🔍 Sample IDs from mockLeads:', mockLeads.slice(0, 5).map(l => ({ id: l.id, type: typeof l.id, name: l.name })));
+                showToast('❌ Lead tidak ditemukan!', 'error');
             }
         }
 
