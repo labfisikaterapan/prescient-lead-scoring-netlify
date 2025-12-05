@@ -234,7 +234,7 @@
     <div id="bg-video-container">
         <div class="video-fallback"></div>
         <video autoplay muted loop playsinline preload="auto" id="bg-video">
-            <source src="/static/universe-effects.1920x1080.mp4" type="video/mp4">
+            <source src="universe-effects.1920x1080.mp4" type="video/mp4">
         </video>
         <div class="absolute inset-0 bg-black/30 z-[-1]"></div>
     </div>
@@ -414,8 +414,8 @@
 
     <!-- DASHBOARD VIDEO BACKGROUND -->
     <div id="bg-video-dashboard">
-        <video autoplay muted loop playsinline preload="auto">
-            <source src="/static/blue-forest-waterfalls.1920x1080.mp4" type="video/mp4">
+        <video id="dashboard-video" autoplay muted loop playsinline preload="auto">
+            <source src="blue-forest-waterfalls.1920x1080.mp4" type="video/mp4">
         </video>
     </div>
 
@@ -1108,15 +1108,25 @@
             const bgVideo = document.getElementById('bg-video');
             const videoContainer = document.getElementById('bg-video-container');
             const dashboardVideo = document.getElementById('dashboard-video');
-            const dashboardVideoContainer = document.getElementById('dashboard-video-container');
+            const dashboardVideoContainer = document.getElementById('bg-video-dashboard');
             
+            // Force play login video
             if (bgVideo) {
-                // Ensure video plays (some browsers block autoplay)
-                bgVideo.play().catch(err => {
-                    console.log('Autoplay blocked, trying to enable:', err);
-                    // Show fallback gradient if video fails
-                    bgVideo.style.display = 'none';
-                });
+                console.log('🎬 Initializing login video...');
+                
+                // Force play immediately
+                const playPromise = bgVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('✓ Login video autoplay started');
+                    }).catch(err => {
+                        console.warn('⚠️ Autoplay blocked, retrying...', err);
+                        // Retry with user interaction
+                        document.body.addEventListener('click', () => {
+                            bgVideo.play().catch(e => console.log('Manual play failed:', e));
+                        }, { once: true });
+                    });
+                }
 
                 // Handle video load success
                 bgVideo.addEventListener('loadeddata', () => {
