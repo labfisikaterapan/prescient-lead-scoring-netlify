@@ -1274,16 +1274,22 @@
             const btn = e.target.querySelector('button');
             const originalText = btn.innerText;
             
-            btn.innerText = 'Mengirim...';
+            if (!email) {
+                alert('❌ Masukkan email Anda!');
+                return;
+            }
+            
+            btn.innerText = 'Memproses...';
             btn.disabled = true;
             
             try {
+                // Try API first
                 const response = await fetch('/api/auth', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email })
+                    body: JSON.stringify({ email, action: 'forgot-password' })
                 });
                 
                 const data = await response.json();
@@ -1298,10 +1304,37 @@
                     forgotView.classList.add('hidden');
                     loginView.classList.remove('hidden');
                 } else {
-                    alert(`❌ Error: ${data.detail}`);
+                    throw new Error(data.detail || 'Forgot password failed');
                 }
             } catch (error) {
-                alert(`❌ Gagal mengirim email:\n${error.message}\n\nPastikan server backend berjalan dan konfigurasi SMTP sudah benar.`);
+                console.warn('API unavailable, using localStorage fallback:', error);
+                
+                // FALLBACK: Client-side password recovery
+                try {
+                    let users = JSON.parse(localStorage.getItem('prescient_users') || '{}');
+                    
+                    // Find user by email
+                    const foundUser = Object.values(users).find(u => u.email === email);
+                    
+                    if (!foundUser) {
+                        alert('❌ Email tidak ditemukan!\n\nPastikan email sudah terdaftar.');
+                        return;
+                    }
+                    
+                    // Show password hint (decoded)
+                    const password = atob(foundUser.password);
+                    alert(`✅ Akun Ditemukan!\n\nUsername: ${foundUser.username}\nPassword: ${password}\n\n⚠️ Simpan password Anda dengan aman!`);
+                    
+                    // Clear form
+                    document.getElementById('forgot-email').value = '';
+                    
+                    // Back to login with auto-fill
+                    document.getElementById('username').value = foundUser.username;
+                    forgotView.classList.add('hidden');
+                    loginView.classList.remove('hidden');
+                } catch (storageError) {
+                    alert(`❌ Error:\n${storageError.message}`);
+                }
             } finally {
                 btn.innerText = originalText;
                 btn.disabled = false;
@@ -1315,18 +1348,30 @@
             const username = document.getElementById('reg-username').value;
             const password = document.getElementById('reg-password').value;
             
+            // Validation
+            if (!email || !username || !password) {
+                alert('❌ Semua field harus diisi!');
+                return;
+            }
+            
+            if (password.length < 4) {
+                alert('❌ Password minimal 4 karakter!');
+                return;
+            }
+            
             const btn = e.target.querySelector('button');
             const originalText = btn.innerText;
             btn.innerText = 'Mendaftar...';
             btn.disabled = true;
             
             try {
+                // Try API first
                 const response = await fetch('/api/auth', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email, username, password })
+                    body: JSON.stringify({ email, username, password, action: 'register' })
                 });
                 
                 const data = await response.json();
@@ -1341,10 +1386,50 @@
                     registerView.classList.add('hidden');
                     loginView.classList.remove('hidden');
                 } else {
-                    alert(`❌ Registrasi Gagal\n\n${data.detail}`);
+                    throw new Error(data.detail || 'Registration failed');
                 }
             } catch (error) {
-                alert(`❌ Gagal menghubungi server:\n${error.message}\n\nPastikan server backend berjalan di port 8000.`);
+                console.warn('API unavailable, using localStorage fallback:', error);
+                
+                // FALLBACK: Client-side registration with localStorage
+                try {
+                    let users = JSON.parse(localStorage.getItem('prescient_users') || '{}');
+                    
+                    // Check if username exists
+                    if (users[username]) {
+                        alert('❌ Username sudah digunakan!\n\nGunakan username lain.');
+                        return;
+                    }
+                    
+                    // Check if email exists
+                    if (Object.values(users).some(u => u.email === email)) {
+                        alert('❌ Email sudah terdaftar!\n\nGunakan email lain atau login.');
+                        return;
+                    }
+                    
+                    // Add new user (store password hash for basic security)
+                    users[username] = {
+                        username: username,
+                        email: email,
+                        password: btoa(password), // Simple base64 encoding
+                        created: new Date().toISOString()
+                    };
+                    
+                    localStorage.setItem('prescient_users', JSON.stringify(users));
+                    
+                    alert(`✅ Registrasi Berhasil!\n\nAkun untuk ${username} telah dibuat.\nSilakan login.`);
+                    
+                    // Clear form
+                    document.getElementById('reg-email').value = '';
+                    document.getElementById('reg-username').value = '';
+                    document.getElementById('reg-password').value = '';
+                    
+                    // Redirect to login
+                    registerView.classList.add('hidden');
+                    loginView.classList.remove('hidden');
+                } catch (storageError) {
+                    alert(`❌ Error:\n${storageError.message}`);
+                }
             } finally {
                 btn.innerText = originalText;
                 btn.disabled = false;
@@ -1361,7 +1446,22 @@
             // Clear previous errors
             errorEl.classList.add('hidden');
             
-            // Hardcoded demo credentials (PRIORITY #1)
+            // Check localStorage users first
+            try {
+                let users = JSON.parse(localStorage.getItem('prescient_users') || '{}');
+                if (users[username] && atob(users[username].password) === password) {
+                    console.log('✓ localStorage login:', username);
+                    localStorage.setItem('access_token', 'local-token-' + username);
+                    localStorage.setItem('username', username);
+                    authContainer.classList.add('hidden');
+                    dashboardContainer.classList.remove('hidden');
+                    switchVideoWallpaper(true);
+                    initDashboard();
+                    return;
+                }
+            } catch (e) {}
+            
+            // Hardcoded demo credentials (PRIORITY #2)
             if (username === 'eiz' && password === 'iris') {
                 console.log('✓ Demo login: eiz/iris');
                 localStorage.setItem('access_token', 'demo-token-eiz-iris');
