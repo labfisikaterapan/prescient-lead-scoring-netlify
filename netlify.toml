@@ -2,6 +2,10 @@
   publish = "static"
   functions = "netlify/functions"
 
+# Install Node.js dependencies for Netlify Functions
+[build.environment]
+  NODE_VERSION = "18"
+
 [[redirects]]
   from = "/api/predict"
   to = "/.netlify/functions/predict"
@@ -20,6 +24,17 @@
 [[redirects]]
   from = "/predict"
   to = "/.netlify/functions/predict"
+  status = 200
+
+# NEW: Password reset endpoints
+[[redirects]]
+  from = "/api/send-reset"
+  to = "/.netlify/functions/send-reset"
+  status = 200
+
+[[redirects]]
+  from = "/api/reset-password"
+  to = "/.netlify/functions/reset-password"
   status = 200
 
 [[redirects]]

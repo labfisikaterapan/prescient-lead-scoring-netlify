@@ -1260,43 +1260,86 @@
             const btn = e.target.querySelector('button');
             const originalText = btn.innerText;
             
-            if (!email) {
-                alert('❌ Masukkan email Anda!');
+            if (!email || !email.includes('@')) {
+                showToast('❌ Masukkan email yang valid!', 'error');
                 return;
             }
             
-            btn.innerText = 'Mencari...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Mengirim...';
             btn.disabled = true;
             
             try {
-                // Direct localStorage lookup (skip API)
-                let users = JSON.parse(localStorage.getItem('prescient_users') || '{}');
+                // === SECURE BACKEND APPROACH ===
+                // Call Netlify Function to send reset email
+                const response = await fetch('/.netlify/functions/send-reset', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email })
+                });
                 
-                // Find user by email
-                const foundUser = Object.values(users).find(u => u.email === email);
+                const result = await response.json();
                 
-                if (!foundUser) {
-                    alert('❌ Email tidak ditemukan!\n\nPastikan email sudah terdaftar atau daftar akun baru.');
+                if (result.success) {
+                    // Show success message
+                    showToast('✅ Email reset password telah dikirim! Periksa inbox Anda.', 'success');
+                    
+                    // Show modal with instructions
+                    alert(`✉️ Email Terkirim!\n\n${result.message}\n\n📧 Periksa folder Inbox atau Spam Anda.\n\n⏱️ Link reset berlaku selama 1 jam.`);
+                    
+                    // If in dev mode, show the link
+                    if (result.devMode && result.resetLink) {
+                        console.log('🔗 DEV MODE - Reset Link:', result.resetLink);
+                        
+                        // Ask if user wants to open the link directly
+                        const openNow = confirm('⚠️ DEV MODE: Email belum dikonfigurasi.\n\nBuka reset link sekarang?');
+                        if (openNow) {
+                            window.location.href = result.resetLink;
+                            return;
+                        }
+                    }
+                    
+                    // Clear form
                     document.getElementById('forgot-email').value = '';
-                    return;
+                    
+                    // Back to login after 2 seconds
+                    setTimeout(() => {
+                        forgotView.classList.add('hidden');
+                        loginView.classList.remove('hidden');
+                    }, 2000);
+                    
+                } else {
+                    // Show error
+                    showToast(`❌ ${result.error || 'Gagal mengirim email reset'}`, 'error');
                 }
                 
-                // Show password (decoded from base64)
-                const password = atob(foundUser.password);
-                alert(`✅ Akun Ditemukan!\n\nUsername: ${foundUser.username}\nPassword: ${password}\n\n⚠️ Simpan informasi ini dengan aman!`);
-                
-                // Clear form
-                document.getElementById('forgot-email').value = '';
-                
-                // Back to login with auto-fill
-                document.getElementById('username').value = foundUser.username;
-                forgotView.classList.add('hidden');
-                loginView.classList.remove('hidden');
-                
             } catch (error) {
-                alert(`❌ Error: ${error.message}`);
+                console.error('Forgot password error:', error);
+                
+                // Fallback to localStorage (if backend fails)
+                console.log('⚠️ Backend error, using localStorage fallback...');
+                
+                try {
+                    let users = JSON.parse(localStorage.getItem('prescient_users') || '{}');
+                    const foundUser = Object.values(users).find(u => u.email === email);
+                    
+                    if (foundUser) {
+                        const password = atob(foundUser.password);
+                        alert(`✅ Akun Ditemukan (Fallback Mode)!\n\nUsername: ${foundUser.username}\nPassword: ${password}\n\n⚠️ Simpan informasi ini dengan aman!`);
+                        
+                        document.getElementById('username').value = foundUser.username;
+                        forgotView.classList.add('hidden');
+                        loginView.classList.remove('hidden');
+                    } else {
+                        showToast('❌ Email tidak ditemukan!', 'error');
+                    }
+                } catch (fbError) {
+                    showToast('❌ Terjadi kesalahan. Silakan coba lagi.', 'error');
+                }
+                
             } finally {
-                btn.innerText = originalText;
+                btn.innerHTML = originalText;
                 btn.disabled = false;
             }
         });

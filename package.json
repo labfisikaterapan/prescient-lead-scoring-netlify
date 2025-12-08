@@ -1,0 +1,26 @@
+{
+  "name": "prescient-lead-scoring",
+  "version": "1.0.0",
+  "description": "AI-powered Lead Scoring Application for Bank Marketing",
+  "main": "index.js",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Static site - no build required'",
+    "deploy": "netlify deploy --prod"
+  },
+  "keywords": [
+    "lead-scoring",
+    "machine-learning",
+    "netlify-functions"
+  ],
+  "author": "Lab Fisika Terapan",
+  "license": "MIT",
+  "dependencies": {
+    "nodemailer": "^6.9.7",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.10.1"
+  }
+}
