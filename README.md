@@ -58,5 +58,9 @@ uvicorn main:app --reload --port 8000
 **A25-CS100 • Capstone Project**
 - M. Rivaldy Pratama - ML Engineer (M318D5Y1369)
 - Eidelwise Prily S. - ML Engineer (M318D5X0520)
+- (R004D5Y1293) - (Muhammad Ihsanul Fikri)- (React & Back-End with AI) 
+- (R322D5Y1228) - (Muhammad Aulia Irsyad)- (React & Back-End with AI) 
+- (R172D5X0997) - (Lilis Karlina Sipahutar)- (React & Back-End with AI) 
+
 
 
