@@ -59,5 +59,4 @@ uvicorn main:app --reload --port 8000
 - M. Rivaldy Pratama - ML Engineer (M318D5Y1369)
 - Eidelwise Prily S. - ML Engineer (M318D5X0520)
 
----
-**Built with ❤️ by Dicoding Indonesia**
+
